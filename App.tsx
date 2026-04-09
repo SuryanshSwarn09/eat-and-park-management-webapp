@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Table, TableStatus, OrderItem, Transaction, StaffMember, MenuItem } from './types';
-import { MENU_ITEMS as DEFAULT_MENU } from './constants'; // Import defaults
+import { MENU_ITEMS as DEFAULT_MENU } from './constants';
 import Dashboard from './components/Dashboard';
 import OrderModule from './components/OrderModule';
 import BillingModule from './components/BillingModule';
@@ -85,31 +85,49 @@ const App: React.FC = () => {
   if (!isAuthenticated) return <Auth onLogin={handleLogin} staffMembers={staffMembers} />;
 
   return (
-    <div className="flex h-screen w-screen bg-slate-50 overflow-hidden relative">
-      <Sidebar currentView={view} isOwner={isOwner} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onLogout={handleLogout} onNavigate={navigateTo} />
+    // FIX 1: Changed h-screen to h-[100dvh] for proper mobile browser height.
+    // Changed bg-slate-50 to bg-[#ffffff] for the Uber-style B2B theme.
+    <div className="flex h-[100dvh] w-screen bg-[#ffffff] overflow-hidden relative font-sans">
+      <Sidebar 
+        currentView={view} 
+        isOwner={isOwner} 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+        onLogout={handleLogout} 
+        onNavigate={navigateTo} 
+      />
       
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        <header className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shrink-0">
-          <button onClick={() => setIsSidebarOpen(true)} className="p-2 hover:bg-slate-100 rounded-xl">
-            <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      {/* FIX 2: Added min-w-0 and min-h-0 to prevent flexbox children from breaking layout boundaries */}
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 h-full overflow-hidden">
+        
+        {/* Mobile Header */}
+        <header className="lg:hidden bg-[#ffffff] border-b border-[#e2e2e2] px-5 py-4 flex items-center justify-between shrink-0 z-10">
+          <button onClick={() => setIsSidebarOpen(true)} className="p-2 -ml-2 hover:bg-[#efefef] rounded-full text-[#000000] transition-colors">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
-          <span className="font-black text-slate-900 text-lg tracking-tight">Eat & Park</span>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${isOwner ? 'bg-indigo-600' : 'bg-slate-800'}`}>
-             <span className="text-[10px] font-bold">{isOwner ? 'O' : 'S'}</span>
+          <span className="font-bold text-[#000000] text-[18px] tracking-tight">Eat & Park</span>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold ${isOwner ? 'bg-[#000000] text-[#ffffff]' : 'bg-[#efefef] text-[#000000]'}`}>
+             {isOwner ? 'AD' : 'ST'}
           </div>
         </header>
 
+        {/* Main Content Area Wrapper */}
         <main className="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 min-h-0 overflow-hidden">
-          <header className="hidden lg:flex mb-6 justify-between items-center shrink-0">
+          
+          {/* Desktop Header */}
+          <header className="hidden lg:flex mb-8 justify-between items-center shrink-0">
             <div>
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Eat & Park POS</h1>
-              <p className="text-slate-500 text-sm font-medium">Terminal #01 • {view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')}</p>
+              <h1 className="text-[32px] font-bold text-[#000000] tracking-tight leading-tight">Eat & Park POS</h1>
+              <p className="text-[#4b4b4b] text-[14px] font-medium mt-1">Terminal #01 • {view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')}</p>
             </div>
           </header>
 
+          {/* View Routing - min-h-0 ensures internal components can scroll properly */}
           <div className="flex-1 min-h-0 relative">
             {view === 'dashboard' && <div className="h-full overflow-y-auto pr-1"><Dashboard tables={tables} onTableClick={handleTableClick} menuItems={menuItems} /></div>}
+            
             {view === 'checkout-map' && <div className="h-full overflow-y-auto pr-1"><CheckoutMap tables={tables} onSelectTable={(id) => { setSelectedTableId(id); setView('billing'); }} menuItems={menuItems} /></div>}
+            
             {view === 'bill-registry' && <SalesHistory transactions={transactions} menuItems={menuItems} />}
 
             {view === 'admin-dashboard' && isOwner && (
@@ -124,6 +142,7 @@ const App: React.FC = () => {
             )}
             
             {view === 'order' && selectedTable && <OrderModule table={selectedTable} onConfirmOrder={(items) => updateTableOrder(selectedTable.id, items)} onGenerateBill={() => { setView('billing'); }} onBack={() => { setSelectedTableId(null); setView('dashboard'); }} menuItems={menuItems} />}
+            
             {view === 'billing' && selectedTable && <div className="h-full overflow-y-auto"><BillingModule table={selectedTable} onFinalize={finalizeTransaction} onBack={() => { setView('dashboard'); }} menuItems={menuItems} /></div>}
           </div>
         </main>

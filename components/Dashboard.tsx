@@ -8,36 +8,29 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ tables, onTableClick, menuItems }) => {
+  
   const getStatusConfig = (status: TableStatus) => {
     switch (status) {
       case TableStatus.AVAILABLE:
         return {
-          bg: 'bg-white hover:bg-emerald-50/20',
-          border: 'border-slate-200',
-          icon: 'bg-emerald-50 text-emerald-600',
-          text: 'text-emerald-600',
-          label: 'Ready',
+          badgeBg: 'bg-[#efefef]',
+          badgeText: 'text-[#4b4b4b]',
+          label: 'Empty',
         };
       case TableStatus.OCCUPIED:
         return {
-          bg: 'bg-white hover:bg-orange-50/20',
-          border: 'border-orange-100',
-          icon: 'bg-orange-50 text-orange-600',
-          text: 'text-orange-600',
+          badgeBg: 'bg-[#000000]',
+          badgeText: 'text-[#ffffff]',
           label: 'Dining',
         };
       case TableStatus.PENDING_PAYMENT:
         return {
-          bg: 'bg-amber-50 hover:bg-amber-100',
-          border: 'border-amber-200',
-          icon: 'bg-amber-500 text-white',
-          text: 'text-amber-700',
-          label: 'Payment Pending',
+          badgeBg: 'bg-[#e2e2e2]',
+          badgeText: 'text-[#000000]',
+          label: 'Pending',
         };
       default:
-        return {
-            bg: 'bg-white', border: 'border-slate-200', icon: 'bg-slate-400', text: 'text-slate-500', label: 'Reserved'
-        }
+        return { badgeBg: 'bg-[#efefef]', badgeText: 'text-[#4b4b4b]', label: 'Reserved' };
     }
   };
 
@@ -49,72 +42,80 @@ const Dashboard: React.FC<DashboardProps> = ({ tables, onTableClick, menuItems }
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-      {tables.map((table) => {
-        const config = getStatusConfig(table.status);
-        const total = calculateTableTotal(table);
-        
-        return (
-          <div
-            key={table.id}
-            className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 hover:shadow-xl flex flex-col h-[18rem] overflow-hidden ${config.bg} ${config.border}`}
-          >
-            {/* Table Number & Status */}
-            <div className="flex justify-between items-start mb-4">
-              <div className={`w-12 h-12 rounded-2xl ${config.icon} flex items-center justify-center font-black text-xl shadow-sm border border-black/5`}>
-                {table.id}
-              </div>
-              <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl border ${config.text} ${config.border} bg-white/80 backdrop-blur-sm`}>
-                {config.label}
-              </span>
-            </div>
-            
-            {/* Table Details */}
-            <div className="flex-1">
-                <h3 className="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                    Table {table.id}
-                </h3>
-                
-                {table.currentOrder.length > 0 ? (
-                  <div className="mt-2 space-y-1">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Current Bill</p>
-                    <p className="text-3xl font-black text-slate-900 tracking-tighter">₹{total}</p>
-                    <p className="text-[10px] font-bold text-orange-500 animate-pulse uppercase tracking-wider">Kitchen Processing {table.currentOrder.length} items</p>
-                  </div>
-                ) : (
-                  <p className="text-sm font-medium text-slate-400 mt-2">Ready for service</p>
-                )}
-            </div>
+    // 'h-full flex flex-col' ensures the dashboard perfectly fills the available screen space without forcing a scroll
+    <div className="h-full flex flex-col pb-4 lg:pb-0">
+      
+      {/* Compact Header */}
+      <div className="mb-4 sm:mb-6 shrink-0">
+        <h2 className="text-[24px] sm:text-[28px] font-bold text-[#000000] tracking-tight leading-none">Floor Plan</h2>
+        <p className="text-[12px] sm:text-[14px] text-[#4b4b4b] mt-1">Manage tables and active orders.</p>
+      </div>
 
-            {/* Quick Actions */}
-            <div className="mt-4 flex gap-2">
-               {table.status === TableStatus.AVAILABLE ? (
-                 <button 
-                   onClick={() => onTableClick(table.id, 'order')}
-                   className="flex-1 bg-slate-900 text-white h-12 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-95"
-                 >
-                   Open Table
-                 </button>
-               ) : (
-                 <>
+      {/* Compact Grid: 
+        Mobile: 2 columns (3 rows)
+        Desktop: 3 columns (2 rows) 
+      */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 flex-1 min-h-0">
+        {tables.map((table) => {
+          const config = getStatusConfig(table.status);
+          const total = calculateTableTotal(table);
+          const itemsCount = table.currentOrder.reduce((sum, item) => sum + item.quantity, 0);
+          
+          return (
+            <div
+              key={table.id}
+              className="bg-[#ffffff] rounded-xl border border-[#e2e2e2] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-shadow p-3 sm:p-4 flex flex-col h-full"
+            >
+              {/* Card Header */}
+              <div className="flex justify-between items-start mb-2">
+                <span className="text-[18px] sm:text-[20px] font-bold text-[#000000] leading-none">T{table.id}</span>
+                <span className={`text-[10px] sm:text-[11px] font-bold px-2 py-1 rounded-full uppercase tracking-wide ${config.badgeBg} ${config.badgeText}`}>
+                  {config.label}
+                </span>
+              </div>
+              
+              {/* Card Body */}
+              <div className="flex-1 flex flex-col justify-center my-2">
+                  {table.status === TableStatus.AVAILABLE ? (
+                    <p className="text-[12px] text-[#afafaf] font-medium leading-tight">Ready for guests</p>
+                  ) : (
+                    <div>
+                      <p className="text-[20px] sm:text-[24px] font-bold text-[#000000] leading-none mb-1">₹{total}</p>
+                      <p className="text-[11px] sm:text-[12px] font-medium text-[#4b4b4b]">{itemsCount} items</p>
+                    </div>
+                  )}
+              </div>
+
+              {/* Card Actions (Compact Buttons) */}
+              <div className="flex gap-2 mt-auto shrink-0">
+                 {table.status === TableStatus.AVAILABLE ? (
                    <button 
                      onClick={() => onTableClick(table.id, 'order')}
-                     className="flex-1 bg-white border border-slate-200 text-slate-900 h-12 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
+                     className="w-full bg-[#000000] hover:bg-[#333333] text-[#ffffff] h-9 sm:h-10 rounded-full font-medium text-[12px] sm:text-[13px] transition-colors"
                    >
-                     Add Food
+                     Open Order
                    </button>
-                   <button 
-                     onClick={() => onTableClick(table.id, 'bill')}
-                     className="flex-1 bg-orange-500 text-white h-12 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-95"
-                   >
-                     View Bill
-                   </button>
-                 </>
-               )}
+                 ) : (
+                   <>
+                     <button 
+                       onClick={() => onTableClick(table.id, 'order')}
+                       className="flex-1 bg-[#efefef] hover:bg-[#e2e2e2] text-[#000000] h-9 sm:h-10 rounded-full font-medium text-[12px] sm:text-[13px] transition-colors"
+                     >
+                       Add
+                     </button>
+                     <button 
+                       onClick={() => onTableClick(table.id, 'bill')}
+                       className="flex-1 bg-[#000000] hover:bg-[#333333] text-[#ffffff] h-9 sm:h-10 rounded-full font-medium text-[12px] sm:text-[13px] transition-colors"
+                     >
+                       Pay
+                     </button>
+                   </>
+                 )}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
