@@ -18,24 +18,24 @@ const CheckoutMap: React.FC<CheckoutMapProps> = ({ tables, onSelectTable, menuIt
   };
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-8">
-        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Final Checkout Overview</h2>
-        <p className="text-slate-500 font-medium">Manage pending bills and finalize settlements.</p>
+    <div className="animate-fade-in pb-10">
+      <div className="mb-6 sm:mb-8 shrink-0">
+        <h2 className="text-[24px] sm:text-[32px] font-bold text-[#0f172a] tracking-tight leading-none">Final Checkout</h2>
+        <p className="text-[14px] text-[#475569] mt-1 sm:mt-2">Manage pending bills and finalize settlements.</p>
       </div>
 
       {tablesWithOrders.length === 0 ? (
-        <div className="bg-white rounded-[3rem] p-20 flex flex-col items-center justify-center border border-slate-200 shadow-sm text-center">
-            <div className="w-32 h-32 bg-slate-50 rounded-full flex items-center justify-center mb-8 text-slate-200">
-                <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-[#ffffff] rounded-xl p-16 flex flex-col items-center justify-center border border-[#e2e8f0] shadow-[0_4px_16px_rgba(0,0,0,0.04)] text-center">
+            <div className="w-16 h-16 bg-[#f1f5f9] rounded-full flex items-center justify-center mb-6 text-[#94a3b8]">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
             </div>
-            <h3 className="text-2xl font-black text-slate-800 mb-2">No Active Bills</h3>
-            <p className="text-slate-400 max-w-sm font-medium">All tables are either free or haven't ordered yet. Pending transactions will appear here.</p>
+            <h3 className="text-[20px] font-bold text-[#0f172a] mb-2">No Active Bills</h3>
+            <p className="text-[#475569] text-[14px] font-medium">All tables are clear. Pending transactions will appear here.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {tablesWithOrders.map((table) => {
             const total = calculateTotal(table);
             const itemsCount = table.currentOrder.reduce((acc, o) => acc + o.quantity, 0);
@@ -43,44 +43,35 @@ const CheckoutMap: React.FC<CheckoutMapProps> = ({ tables, onSelectTable, menuIt
             return (
               <div 
                 key={table.id}
-                className="bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 shadow-sm flex flex-col hover:shadow-xl transition-all duration-300 relative group overflow-hidden"
+                className="bg-[#ffffff] rounded-xl border border-[#e2e8f0] p-6 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] flex flex-col transition-shadow relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                </div>
-
                 <div className="flex justify-between items-start mb-6">
                     <div>
-                        <h4 className="text-3xl font-black text-slate-900 tracking-tighter">Table {table.id}</h4>
-                        <p className="text-xs font-black text-slate-400 uppercase tracking-widest mt-1">
-                            Standard Seating
-                        </p>
+                        <h4 className="text-[24px] font-bold text-[#0f172a] tracking-tight leading-none">Table {table.id}</h4>
                     </div>
-                    <span className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest ${table.status === TableStatus.PENDING_PAYMENT ? 'bg-amber-100 text-amber-600' : 'bg-orange-100 text-orange-600'}`}>
-                        {table.status === TableStatus.PENDING_PAYMENT ? "Waiting for Bill" : "Dining"}
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${table.status === TableStatus.PENDING_PAYMENT ? 'bg-[#e2e8f0] text-[#0f172a]' : 'bg-[#253b80] text-[#ffffff]'}`}>
+                        {table.status === TableStatus.PENDING_PAYMENT ? "Pending" : "Dining"}
                     </span>
                 </div>
 
-                <div className="bg-slate-50 p-6 rounded-3xl mb-8 flex justify-between items-center">
+                <div className="bg-[#f1f5f9] border border-[#f1f5f9] p-5 rounded-xl mb-6 flex justify-between items-center">
                     <div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Amount Payable</p>
-                        <p className="text-3xl font-black text-slate-900 tracking-tighter">₹{total}</p>
+                        <p className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wide mb-1">Payable</p>
+                        <p className="text-[28px] font-bold text-[#0f172a] leading-none">₹{total}</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Items</p>
-                        <p className="text-xl font-black text-slate-700">{itemsCount}</p>
+                        <p className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wide mb-1">Items</p>
+                        <p className="text-[18px] font-bold text-[#0f172a]">{itemsCount}</p>
                     </div>
                 </div>
 
                 <button 
                     onClick={() => onSelectTable(table.id)}
-                    className="w-full h-16 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black shadow-lg shadow-slate-900/10 flex items-center justify-center gap-3 transition-all active:scale-95 group"
+                    className="w-full h-12 bg-[#253b80] hover:bg-[#0093d5] text-[#ffffff] rounded-full font-bold text-[14px] flex items-center justify-center gap-2 transition-colors mt-auto"
                 >
                     <span>Finalize Bill</span>
-                    <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                 </button>
               </div>

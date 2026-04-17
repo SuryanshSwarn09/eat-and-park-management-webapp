@@ -36,22 +36,20 @@ const Auth: React.FC<AuthProps> = ({ onLogin, staffMembers }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#ffffff] flex flex-col items-center justify-center p-6">
+    <div className="min-h-[100dvh] bg-[#ffffff] flex flex-col items-center justify-center p-6 font-sans">
       <div className="w-full max-w-sm">
         
-        {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-[32px] font-bold text-[#000000] tracking-tight leading-tight">Eat & Park</h1>
-          <p className="text-[#4b4b4b] text-[16px] font-medium mt-2">Sign in to your account</p>
+          <h1 className="text-[32px] font-bold text-[#0f172a] tracking-tight leading-tight">Eat & Park</h1>
+          <p className="text-[#475569] text-[16px] font-medium mt-2">Sign in to your terminal</p>
         </div>
 
-        {/* Role Switcher (Pill Chips) */}
         <div className="flex gap-2 mb-8 bg-[#ffffff]">
           <button
             type="button"
             onClick={() => { setRole('staff'); setError(''); }}
             className={`flex-1 py-3 px-4 text-[16px] font-medium rounded-full transition-colors ${
-              role === 'staff' ? 'bg-[#000000] text-[#ffffff]' : 'bg-[#efefef] text-[#000000] hover:bg-[#e2e2e2]'
+              role === 'staff' ? 'bg-[#253b80] text-[#ffffff]' : 'bg-[#f1f5f9] text-[#0f172a] hover:bg-[#e2e8f0]'
             }`}
           >
             Staff
@@ -60,14 +58,13 @@ const Auth: React.FC<AuthProps> = ({ onLogin, staffMembers }) => {
             type="button"
             onClick={() => { setRole('owner'); setError(''); }}
             className={`flex-1 py-3 px-4 text-[16px] font-medium rounded-full transition-colors ${
-              role === 'owner' ? 'bg-[#000000] text-[#ffffff]' : 'bg-[#efefef] text-[#000000] hover:bg-[#e2e2e2]'
+              role === 'owner' ? 'bg-[#253b80] text-[#ffffff]' : 'bg-[#f1f5f9] text-[#0f172a] hover:bg-[#e2e8f0]'
             }`}
           >
             Admin
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-4">
             <div>
@@ -78,7 +75,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin, staffMembers }) => {
                 placeholder={role === 'owner' ? "Admin ID" : "Staff ID"}
                 required
                 disabled={isProcessing}
-                className="w-full h-14 bg-[#ffffff] border border-[#000000] rounded-lg px-4 text-[16px] text-[#000000] placeholder-[#afafaf] focus:outline-none focus:ring-2 focus:ring-[#000000] focus:border-transparent transition-shadow disabled:opacity-50"
+                className="w-full h-14 bg-[#ffffff] border border-[#cbd5e1] rounded-lg px-4 text-[16px] text-[#0f172a] placeholder-[#94a3b8] focus:outline-none focus:ring-1 focus:ring-[#2563eb] transition-shadow disabled:opacity-50"
               />
             </div>
 
@@ -90,23 +87,23 @@ const Auth: React.FC<AuthProps> = ({ onLogin, staffMembers }) => {
                 placeholder="Password"
                 required
                 disabled={isProcessing}
-                className="w-full h-14 bg-[#ffffff] border border-[#000000] rounded-lg px-4 text-[16px] text-[#000000] placeholder-[#afafaf] focus:outline-none focus:ring-2 focus:ring-[#000000] focus:border-transparent transition-shadow disabled:opacity-50"
+                className="w-full h-14 bg-[#ffffff] border border-[#cbd5e1] rounded-lg px-4 text-[16px] text-[#0f172a] placeholder-[#94a3b8] focus:outline-none focus:ring-1 focus:ring-[#2563eb] transition-shadow disabled:opacity-50"
               />
             </div>
 
-            {error && <p className="text-[#000000] text-[14px] font-medium bg-[#efefef] p-3 rounded-lg border border-[#000000]">{error}</p>}
+            {error && <p className="text-[#0f172a] text-[14px] font-medium bg-[#f1f5f9] p-3 rounded-lg border border-[#e2e8f0]">{error}</p>}
           </div>
 
           <button
             type="submit"
             disabled={isProcessing || !userId || !password}
-            className="w-full h-14 bg-[#000000] hover:bg-[#333333] disabled:opacity-50 text-[#ffffff] rounded-full font-bold text-[16px] transition-colors flex items-center justify-center"
+            className="w-full h-14 bg-[#253b80] hover:bg-[#0093d5] disabled:opacity-50 text-[#ffffff] rounded-full font-bold text-[16px] transition-colors flex items-center justify-center"
           >
             {isProcessing ? "Verifying..." : "Continue"}
           </button>
         </form>
 
-        <p className="text-center text-[12px] text-[#afafaf] mt-10">
+        <p className="text-center text-[12px] text-[#94a3b8] mt-10">
           Secure terminal access for authorized personnel only.
         </p>
       </div>

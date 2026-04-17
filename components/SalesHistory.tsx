@@ -26,26 +26,26 @@ const SalesHistory: React.FC<SalesHistoryProps> = ({ transactions, menuItems }) 
       const timeStr = new Date().toLocaleTimeString();
 
       doc.setFontSize(22);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(15, 23, 42);
       doc.text("Eat & Park POS", 14, 22);
       
       doc.setFontSize(12);
-      doc.setTextColor(75, 75, 75);
+      doc.setTextColor(71, 85, 105);
       doc.text('Daily Sales Registry Report', 14, 30);
       doc.text(`Generated: ${dateStr} at ${timeStr}`, 14, 36);
 
-      doc.setDrawColor(226, 226, 226);
-      doc.setFillColor(248, 248, 248);
+      doc.setDrawColor(226, 232, 240);
+      doc.setFillColor(241, 245, 249);
       doc.roundedRect(14, 45, 182, 30, 3, 3, 'FD');
       
       doc.setFontSize(10);
-      doc.setTextColor(75, 75, 75);
+      doc.setTextColor(71, 85, 105);
       doc.text('TOTAL REVENUE (INCL.)', 20, 55);
       doc.text('PAYMENTS DONE', 80, 55);
       doc.text('ITEMS SERVED', 140, 55);
       
       doc.setFontSize(16);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(15, 23, 42);
       doc.text(`INR ${Math.round(totalRevenue)}`, 20, 65);
       doc.text(`${totalPaymentsDone}`, 80, 65);
       doc.text(`${totalItemsServed}`, 140, 65);
@@ -64,17 +64,17 @@ const SalesHistory: React.FC<SalesHistoryProps> = ({ transactions, menuItems }) 
         body: tableData,
         theme: 'grid',
         headStyles: { 
-          fillColor: [0, 0, 0], 
+          fillColor: [37, 99, 235], 
           textColor: [255, 255, 255], 
           fontSize: 10,
           fontStyle: 'bold' 
         },
         bodyStyles: { 
           fontSize: 10, 
-          textColor: [0, 0, 0] 
+          textColor: [15, 23, 42] 
         },
         alternateRowStyles: { 
-          fillColor: [248, 248, 248] 
+          fillColor: [241, 245, 249] 
         },
         margin: { top: 85 }
       });
@@ -90,15 +90,12 @@ const SalesHistory: React.FC<SalesHistoryProps> = ({ transactions, menuItems }) 
   };
 
   return (
-    // FIX: Added 'h-full overflow-y-auto pr-2' to the very top container.
-    // This restores the scrollbar, allowing the entire page (header + cards + list) to scroll together smoothly.
     <div className="h-full overflow-y-auto pr-2 animate-fade-in pb-20 lg:pb-10 space-y-6 sm:space-y-8">
       
-      {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 shrink-0">
         <div>
-          <h2 className="text-[32px] font-bold text-[#000000] tracking-tight leading-none">Bill Registry</h2>
-          <p className="text-[14px] text-[#4b4b4b] mt-2">Daily summary of finalized settlements (GST Inclusive).</p>
+          <h2 className="text-[32px] font-bold text-[#0f172a] tracking-tight leading-none">Bill Registry</h2>
+          <p className="text-[14px] text-[#475569] mt-2">Daily summary of finalized settlements (GST Inclusive).</p>
         </div>
         
         <button 
@@ -106,8 +103,8 @@ const SalesHistory: React.FC<SalesHistoryProps> = ({ transactions, menuItems }) 
           disabled={transactions.length === 0 || isExporting}
           className={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-full font-medium text-[14px] transition-colors shrink-0 ${
             transactions.length === 0 
-            ? 'bg-[#efefef] text-[#afafaf] cursor-not-allowed' 
-            : 'bg-[#000000] hover:bg-[#333333] text-[#ffffff] active:scale-95 shadow-[0_4px_16px_rgba(0,0,0,0.16)]'
+            ? 'bg-[#f1f5f9] text-[#94a3b8] cursor-not-allowed' 
+            : 'bg-[#253b80] hover:bg-[#0093d5] text-[#ffffff] active:scale-95 shadow-[0_4px_16px_rgba(0,0,0,0.16)]'
           }`}
         >
           {isExporting ? (
@@ -124,67 +121,65 @@ const SalesHistory: React.FC<SalesHistoryProps> = ({ transactions, menuItems }) 
         </button>
       </div>
       
-      {/* Compact Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 shrink-0">
-        <div className="bg-[#ffffff] p-5 rounded-xl border border-[#e2e2e2] shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
-          <p className="text-[12px] font-bold text-[#afafaf] uppercase tracking-wide mb-1">Total Paid</p>
-          <p className="text-[24px] font-bold text-[#000000] tracking-tight leading-none">{totalPaymentsDone} Bills</p>
+        <div className="bg-[#ffffff] p-5 rounded-xl border border-[#e2e8f0] shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+          <p className="text-[12px] font-bold text-[#94a3b8] uppercase tracking-wide mb-1">Total Paid</p>
+          <p className="text-[24px] font-bold text-[#0f172a] tracking-tight leading-none">{totalPaymentsDone} Bills</p>
         </div>
-        <div className="bg-[#ffffff] p-5 rounded-xl border border-[#e2e2e2] shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
-          <p className="text-[12px] font-bold text-[#afafaf] uppercase tracking-wide mb-1">Daily Revenue (Incl.)</p>
-          <p className="text-[24px] font-bold text-[#000000] tracking-tight leading-none">₹{Math.round(totalRevenue)}</p>
+        <div className="bg-[#ffffff] p-5 rounded-xl border border-[#e2e8f0] shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+          <p className="text-[12px] font-bold text-[#94a3b8] uppercase tracking-wide mb-1">Daily Revenue (Incl.)</p>
+          <p className="text-[24px] font-bold text-[#0f172a] tracking-tight leading-none">₹{Math.round(totalRevenue)}</p>
         </div>
-        <div className="bg-[#000000] p-5 rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
-          <p className="text-[12px] font-bold text-[#afafaf] uppercase tracking-wide mb-1">Items Served</p>
+        <div className="bg-[#253b80] p-5 rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
+          <p className="text-[12px] font-bold text-[#f1f5f9] uppercase tracking-wide mb-1">Items Served</p>
           <p className="text-[24px] font-bold text-[#ffffff] tracking-tight leading-none">{totalItemsServed} Dishes</p>
         </div>
       </div>
 
-      {/* Transactions List */}
       <div>
         {transactions.length === 0 ? (
-          <div className="bg-[#ffffff] rounded-xl p-16 flex flex-col items-center justify-center border border-[#e2e2e2] text-center">
-              <div className="w-16 h-16 bg-[#efefef] rounded-full flex items-center justify-center mb-4 text-[#afafaf]">
+          <div className="bg-[#ffffff] rounded-xl p-16 flex flex-col items-center justify-center border border-[#e2e8f0] text-center">
+              <div className="w-16 h-16 bg-[#f1f5f9] rounded-full flex items-center justify-center mb-4 text-[#94a3b8]">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
               </div>
-              <h3 className="text-[18px] font-bold text-[#000000]">No Sales History</h3>
-              <p className="text-[#4b4b4b] text-[14px] mt-1">Transactions will appear here after checkout.</p>
+              <h3 className="text-[18px] font-bold text-[#0f172a]">No Sales History</h3>
+              <p className="text-[#475569] text-[14px] mt-1">Transactions will appear here after checkout.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             {[...transactions].reverse().map((tx) => (
-              <div key={tx.id} className="bg-[#ffffff] rounded-xl border border-[#e2e2e2] p-5 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow flex flex-col gap-4">
+              <div key={tx.id} className="bg-[#ffffff] rounded-xl border border-[#e2e8f0] p-5 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow flex flex-col gap-4">
                 
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1">
-                      <p className="text-[12px] font-bold text-[#afafaf] uppercase tracking-wide">INV #{tx.id}</p>
-                      <h4 className="text-[18px] font-bold text-[#000000] tracking-tight mt-1">Table {tx.tableId} Settlement</h4>
+                      <p className="text-[12px] font-bold text-[#94a3b8] uppercase tracking-wide">INV #{tx.id}</p>
+                      <h4 className="text-[18px] font-bold text-[#0f172a] tracking-tight mt-1">Table {tx.tableId} Settlement</h4>
                   </div>
                   <div className="text-right shrink-0">
-                      <span className="bg-[#efefef] text-[#000000] text-[12px] font-bold px-3 py-1 rounded-full uppercase">
+                      <span className="bg-[#f1f5f9] text-[#0f172a] text-[12px] font-bold px-3 py-1 rounded-full uppercase">
                           {tx.paymentMethod}
                       </span>
-                      <p className="text-[12px] font-medium text-[#4b4b4b] mt-2">{tx.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                      <p className="text-[12px] font-medium text-[#475569] mt-2">{tx.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 py-4 border-y border-[#efefef]">
+                <div className="flex flex-wrap gap-2 py-4 border-y border-[#f1f5f9]">
                   {tx.items.map((item, idx) => {
                       const menu = menuItems.find(m => m.id === item.menuItemId);
                       return (
-                          <div key={idx} className="flex items-center gap-1.5 bg-[#efefef] px-2.5 py-1 rounded text-[12px]">
-                              <span className="text-[#000000] font-bold">{item.quantity}x</span>
-                              <span className="text-[#4b4b4b] font-medium truncate max-w-[120px]">{menu?.name}</span>
+                          <div key={idx} className="flex items-center gap-1.5 bg-[#f1f5f9] px-2.5 py-1 rounded text-[12px]">
+                              <span className="text-[#0f172a] font-bold">{item.quantity}x</span>
+                              <span className="text-[#475569] font-medium truncate max-w-[120px]">{menu?.name}</span>
                           </div>
                       )
                   })}
                 </div>
 
                 <div className="flex justify-between items-end">
-                  <span className="text-[12px] font-bold text-[#4b4b4b] uppercase tracking-wide">Amount Paid</span>
-                  <p className="text-[24px] font-bold text-[#000000] tracking-tight leading-none">₹{Math.round(tx.total)}</p>
+                  <span className="text-[12px] font-bold text-[#475569] uppercase tracking-wide">Amount Paid</span>
+                  <p className="text-[24px] font-bold text-[#0f172a] tracking-tight leading-none">₹{Math.round(tx.total)}</p>
                 </div>
               </div>
             ))}
